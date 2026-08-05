@@ -22,6 +22,9 @@ spec:
           open5gs-amfd
         ports:
         - containerPort: 7777
+          protocol: TCP
+        - containerPort: 38412
+          protocol: SCTP
         resources:
           requests:
             cpu: "50m"
@@ -42,3 +45,6 @@ spec:
   - protocol: TCP
     port: 7777
     targetPort: 7777
+  - protocol: SCTP
+    port: 38412
+    targetPort: 38412
