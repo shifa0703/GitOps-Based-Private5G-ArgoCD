@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udr
+  namespace: open5gs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udr
+  template:
+    metadata:
+      labels:
+        app: udr
+    spec:
+      containers:
+      - name: udr
+        image: gradiant/open5gs:2.7.0
+        env:
+        - name: OGS_NO_EPOLL
+          value: "1"
+        - name: OGS_NO_POLL
+          value: "1"
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - |
+          ulimit -n 65536
+          open5gs-udrd -c /opt/open5gs/etc/open5gs/udr.yaml
+        ports:
+        - containerPort: 7777
+        volumeMounts:
+        - name: udr-config
+          mountPath: /opt/open5gs/etc/open5gs/udr.yaml
+          subPath: udr.yaml
+      volumes:
+      - name: udr-config
+        configMap:
+          name: udr-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udr
+  namespace: open5gs
+spec:
+  selector:
+    app: udr
+  ports:
+  - name: sbi
+    port: 7777
+    targetPort: 7777

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ausf
+  namespace: open5gs
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: ausf
+
+  template:
+    metadata:
+      labels:
+        app: ausf
+
+    spec:
+      containers:
+      - name: ausf
+
+        image: gradiant/open5gs:2.7.0
+        imagePullPolicy: IfNotPresent
+
+        command:
+        - /bin/bash
+        - -c
+
+        args:
+        - |
+          open5gs-ausfd -c /opt/open5gs/etc/open5gs/ausf.yaml
+
+        ports:
+        - containerPort: 7777
+          protocol: TCP
+
+        volumeMounts:
+        - name: ausf-config
+          mountPath: /opt/open5gs/etc/open5gs/ausf.yaml
+          subPath: ausf.yaml
+
+      volumes:
+      - name: ausf-config
+        configMap:
+          name: ausf-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ausf
+  namespace: open5gs
+
+spec:
+  selector:
+    app: ausf
+
+  ports:
+  - name: sbi
+    port: 7777
+    targetPort: 7777

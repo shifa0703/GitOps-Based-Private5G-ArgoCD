@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udm
+  namespace: open5gs
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: udm
+
+  template:
+    metadata:
+      labels:
+        app: udm
+
+    spec:
+      containers:
+      - name: udm
+
+        image: gradiant/open5gs:2.7.0
+        imagePullPolicy: IfNotPresent
+
+        command:
+        - /bin/bash
+        - -c
+
+        args:
+        - |
+          open5gs-udmd -c /opt/open5gs/etc/open5gs/udm.yaml
+
+        ports:
+        - containerPort: 7777
+          protocol: TCP
+
+        volumeMounts:
+        - name: udm-config
+          mountPath: /opt/open5gs/etc/open5gs/udm.yaml
+          subPath: udm.yaml
+
+      volumes:
+      - name: udm-config
+        configMap:
+          name: udm-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: udm
+  namespace: open5gs
+
+spec:
+  selector:
+    app: udm
+
+  ports:
+  - name: sbi
+    port: 7777
+    targetPort: 7777

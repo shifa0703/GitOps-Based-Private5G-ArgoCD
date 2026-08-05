@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ueransim-startup
+  namespace: open5gs
+data:
+  start-gnb.sh: |
+    #!/bin/bash
+
+    IP=$(hostname -i)
+
+    sed -i "s/linkIp:.*/linkIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/ngapIp:.*/ngapIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/gtpIp:.*/gtpIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/address:.*/address: amf/" /opt/UERANSIM/config/open5gs-gnb.yaml
+
+    cd /opt/UERANSIM
+
+    ./build/nr-gnb -c config/open5gs-gnb.yaml
+
+  start-ue.sh: |
+    #!/bin/bash
+
+    cd /opt/UERANSIM
+
+    ./build/nr-ue -c config/open5gs-ue.yaml

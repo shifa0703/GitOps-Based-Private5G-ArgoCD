@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upf
+  namespace: open5gs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: upf
+  template:
+    metadata:
+      labels:
+        app: upf
+    spec:
+      containers:
+      - name: upf
+        image: gradiant/open5gs:2.7.0
+        command: ["/bin/bash", "-c"]
+        args:
+          - open5gs-upfd
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: tun
+          mountPath: /dev/net/tun
+        ports:
+        - containerPort: 8805
+          protocol: UDP
+      volumes:
+      - name: tun
+        hostPath:
+          path: /dev/net/tun
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: upf
+  namespace: open5gs
+spec:
+  selector:
+    app: upf
+  ports:
+  - name: pfcp
+    protocol: UDP
+    port: 8805
+    targetPort: 8805

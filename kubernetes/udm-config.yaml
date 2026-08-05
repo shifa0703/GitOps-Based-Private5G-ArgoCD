@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: udm-config
+  namespace: open5gs
+
+data:
+  udm.yaml: |
+    logger:
+      file: /opt/open5gs/var/log/open5gs/udm.log
+
+    global:
+
+    udm:
+      hnet:
+      - id: 1
+        scheme: 1
+        key: /opt/open5gs/etc/open5gs/hnet/curve25519-1.key
+
+      sbi:
+        server:
+          - dev: eth0
+            port: 7777
+
+        client:
+          nrf:
+            - uri: http://nrf:7777
