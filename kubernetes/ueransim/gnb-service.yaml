@@ -4,6 +4,7 @@ metadata:
   name: ueransim-gnb
   namespace: open5gs
 spec:
+  clusterIP: None
   selector:
     app: ueransim-gnb
   ports:
