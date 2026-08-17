@@ -1,6 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    gitops-demo: "v1"
   name: webui
   namespace: open5gs
 spec:
@@ -25,6 +27,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    gitops-demo: "v1"
   name: webui
   namespace: open5gs
 spec:
