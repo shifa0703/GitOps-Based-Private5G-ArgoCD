@@ -2,16 +2,11 @@
 
 cd /opt/UERANSIM
 
-GNB_IP=$(getent hosts ueransim-gnb | awk '{print $1}' | head -n1)
+cp /opt/UERANSIM/config/open5gs-ue.yaml /tmp/open5gs-ue.yaml
 
-if [ -z "$GNB_IP" ]; then
-    echo "ERROR: Could not resolve ueransim-gnb"
-    exit 1
-fi
+echo "Using gNB Service: ueransim-gnb"
 
-echo "Using gNB IP: $GNB_IP"
-
-sed -i "/gnbSearchList:/,/uacAic:/ s/^[[:space:]]*- [0-9.]*$/  - ${GNB_IP}/" /opt/UERANSIM/config/open5gs-ue.yaml
+sed -i '/gnbSearchList:/,/uacAic:/ s/^[[:space:]]*- .*/  - ueransim-gnb/' /tmp/open5gs-ue.yaml
 
 echo "Starting UERANSIM UE..."
-./build/nr-ue -c config/open5gs-ue.yaml
+./build/nr-ue -c /tmp/open5gs-ue.yaml
