@@ -10,6 +10,8 @@ data:
 
     global:
 
+    db_uri: mongodb://mongodb:27017/open5gs
+
     pcf:
       sbi:
         server:
