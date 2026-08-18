@@ -14,7 +14,7 @@ data:
     udr:
       sbi:
         server:
-        - address: 0.0.0.0
+        - dev: eth0
           port: 7777
 
         client:
