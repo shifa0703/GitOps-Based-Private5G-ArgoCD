@@ -23,6 +23,10 @@ spec:
         image: gradiant/open5gs:2.7.0
         imagePullPolicy: IfNotPresent
 
+        env:
+        - name: DB_URI
+          value: mongodb://mongodb:27017/open5gs
+
         command:
         - /bin/bash
         - -c
