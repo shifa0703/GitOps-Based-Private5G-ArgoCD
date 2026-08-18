@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: udr
-        image: gradiant/open5gs:2.7.7
+        image: gradiant/open5gs:2.7.0
         imagePullPolicy: IfNotPresent
         command:
         - /bin/bash
