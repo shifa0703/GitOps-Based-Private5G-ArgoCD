@@ -5,17 +5,19 @@ metadata:
   namespace: open5gs
 data:
   udr.yaml: |
-    db_uri: mongodb://mongodb:27017/open5gs
-
     logger:
-      file:
-        path: /opt/open5gs/var/log/open5gs/udr.log
+      file: /opt/open5gs/var/log/open5gs/udr.log
 
-    sbi:
-      server:
-        - dev: eth0
-          port: 7777
+    global:
 
-      client:
-        nrf:
-          - uri: http://nrf:7777
+    udr:
+      sbi:
+        server:
+          - dev: eth0
+            port: 7777
+
+        client:
+          nrf:
+            - uri: http://nrf:7777
+
+    db_uri: mongodb://mongodb:27017/open5gs
