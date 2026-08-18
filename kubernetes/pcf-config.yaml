@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pcf-config
+  namespace: open5gs
+data:
+  pcf.yaml: |
+    logger:
+      file: /opt/open5gs/var/log/open5gs/pcf.log
+
+    global:
+
+    pcf:
+      sbi:
+        server:
+          - dev: eth0
+            port: 7777
+
+        client:
+          nrf:
+            - uri: http://nrf:7777

@@ -9,35 +9,12 @@ data:
 
     IP=$(hostname -i)
 
-    sed -i "s/linkIp:.*/linkIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
-    sed -i "s/ngapIp:.*/ngapIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
-    sed -i "s/gtpIp:.*/gtpIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
-    sed -i "s/address:.*/address: amf/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/^linkIp:.*/linkIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/^ngapIp:.*/ngapIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/^gtpIp:.*/gtpIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
+    sed -i "s/address: .*/address: amf/" /opt/UERANSIM/config/open5gs-gnb.yaml
+
+    sed -i '/^  - sst: 1$/a\    sd: 000001' /opt/UERANSIM/config/open5gs-gnb.yaml
 
     cd /opt/UERANSIM
-
     ./build/nr-gnb -c config/open5gs-gnb.yaml
-
-  start-ue.sh: |
-    #!/bin/bash
-
-    cd /opt/UERANSIM
-
-    GNB_IP=$(getent hosts ueransim-gnb | awk '{print $1}' | head -n1)
-
-    if [ -z "$GNB_IP" ]; then
-        echo "ERROR: Could not resolve ueransim-gnb"
-        exit 1
-    fi
-
-    echo "Resolved gNB Service to IP: $GNB_IP"
-
-    cp /opt/UERANSIM/config/open5gs-ue.yaml /tmp/open5gs-ue.yaml
-
-    sed -i "/gnbSearchList:/,/uacAic:/ s/^[[:space:]]*- .*/  - ${GNB_IP}/" /tmp/open5gs-ue.yaml
-
-    echo "UE gNB search list:"
-    grep -n -A2 "gnbSearchList" /tmp/open5gs-ue.yaml
-
-    echo "Starting UERANSIM UE..."
-    ./build/nr-ue -c /tmp/open5gs-ue.yaml
