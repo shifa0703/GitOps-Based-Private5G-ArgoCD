@@ -3,13 +3,13 @@ kind: ConfigMap
 metadata:
   name: udr-config
   namespace: open5gs
-
 data:
   udr.yaml: |
-    db_uri: mongodb://mongodb/open5gs
+    db_uri: mongodb://mongodb:27017/open5gs
 
     logger:
-      file: /opt/open5gs/var/log/open5gs/udr.log
+      file:
+        path: /opt/open5gs/var/log/open5gs/udr.log
 
     udr:
       sbi:
