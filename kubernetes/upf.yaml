@@ -22,9 +22,6 @@ spec:
       containers:
       - name: upf
         image: gradiant/open5gs:2.7.0
-        env:
-        - name: OGS_NO_EPOLL
-          value: "1"
 
         command:
         - /bin/bash
