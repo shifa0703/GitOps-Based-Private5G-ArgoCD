@@ -22,6 +22,15 @@ spec:
       containers:
       - name: upf
         image: gradiant/open5gs:2.7.0
+        imagePullPolicy: IfNotPresent
+
+        env:
+        - name: OGS_NO_EPOLL
+          value: "1"
+        - name: OGS_NO_AF
+          value: "1"
+        - name: OGS_NO_UESIM
+          value: "1"
 
         command:
         - /bin/bash
@@ -43,7 +52,6 @@ spec:
           protocol: UDP
 
         volumeMounts:
-
         - name: tun
           mountPath: /dev/net/tun
 
@@ -51,9 +59,7 @@ spec:
           mountPath: /opt/open5gs/etc/open5gs/upf.yaml
           subPath: upf.yaml
 
-
       volumes:
-
       - name: tun
         hostPath:
           path: /dev/net/tun
@@ -61,3 +67,26 @@ spec:
       - name: upf-config
         configMap:
           name: upf-config
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: upf
+  namespace: open5gs
+
+spec:
+  selector:
+    app: upf
+
+  ports:
+  - name: pfcp
+    protocol: UDP
+    port: 8805
+    targetPort: 8805
+
+  - name: gtpu
+    protocol: UDP
+    port: 2152
+    targetPort: 2152
