@@ -38,20 +38,13 @@ spec:
 
         ports:
         - containerPort: 8805
-          name: pfcp
           protocol: UDP
 
-        - containerPort: 2152
-          name: gtpu
-          protocol: UDP
 
         volumeMounts:
         - name: tun
           mountPath: /dev/net/tun
 
-        - name: upf-config
-          mountPath: /opt/open5gs/etc/open5gs/upf.yaml
-          subPath: upf.yaml
 
       volumes:
       - name: tun
