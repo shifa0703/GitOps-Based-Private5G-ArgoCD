@@ -22,16 +22,16 @@ spec:
         args:
         - bash /opt/UERANSIM/start-ue.sh
         volumeMounts:
-        - name: ueransim-startup
+        - name: ueransim-ue-startup
           mountPath: /opt/UERANSIM/start-ue.sh
           subPath: start-ue.sh
         - name: ueransim-ue-config
           mountPath: /opt/UERANSIM/config/open5gs-ue.yaml
           subPath: open5gs-ue.yaml
       volumes:
-      - name: ueransim-startup
+      - name: ueransim-ue-startup
         configMap:
-          name: ueransim-startup
+          name: ueransim-ue-startup
       - name: ueransim-ue-config
         configMap:
           name: ueransim-ue-config

@@ -27,7 +27,7 @@ data:
     nsNamePrefix: 'ueransim'
 
     gnbSearchList:
-      - 10.244.0.220
+      - 10.244.1.78
 
     uacAic:
       mps: false

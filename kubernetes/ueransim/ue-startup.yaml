@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ueransim-ue-startup
+  namespace: open5gs
+data:
+  start-ue.sh: |
+    #!/bin/bash
+
+    IP=$(hostname -i)
+
+    cd /opt/UERANSIM
+    ./build/nr-ue -c config/open5gs-ue.yaml
