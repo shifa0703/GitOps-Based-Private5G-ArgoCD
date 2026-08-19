@@ -14,7 +14,6 @@ data:
     sed -i "s/^gtpIp:.*/gtpIp: ${IP}/" /opt/UERANSIM/config/open5gs-gnb.yaml
     sed -i "s/address: .*/address: amf/" /opt/UERANSIM/config/open5gs-gnb.yaml
 
-    sed -i '/^  - sst: 1$/a\    sd: 000001' /opt/UERANSIM/config/open5gs-gnb.yaml
 
     cd /opt/UERANSIM
     ./build/nr-gnb -c config/open5gs-gnb.yaml
